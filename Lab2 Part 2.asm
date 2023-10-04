@@ -46,10 +46,10 @@ main:
 	# initialization
 	li	$s1, 2			# j = 2
 	li	$s2, 3			# n = 3
-	li 	$s3, 6			# holds value (110) for adding
-	li 	$s4, 14			# holds value (1110) for adding (E)
-	li 	$s5, 30			# holds value (11110) for adding (1E)
-	li 	$s6, 2			# holds value (10) for adding
+	li 	$s3, 6			# holds value (110)
+	li 	$s4, 14			# holds value (1110)
+	li 	$s5, 30			# holds value (11110)
+	li 	$s6, 2			# holds value (10)
 	
 	# for (i = 0; i <= 16; i++)
 	li	$s0, 0			# i = 0
@@ -59,12 +59,17 @@ top:
 	lw	$s1, 0($t0)		# j = testcase[i]
 	# Your part starts here
 	
-	#make sure variables are reset for every run
+	#make sure variables are reset for every run (probably unecessary but ensures things dont get scrambled)
 	li $s2, 0 # s2 = 0
 	li $t1, 0 # t1 = 0
 	li $t2, 0 # t2 = 0
 	li $t3, 0 # t3 = 0
 	li $t4, 0 # t4 = 0
+	li $t5, 0 # t5 = 0
+	li $t6, 0 # t6 = 0
+	li $t7, 0 # t7 = 0
+	li $t8, 0 # t8 = 0
+	li $t9, 0 # t9 = 0
 	
 	#for characters that can be stored in 1 bit
 	bgeu $s1, 0x80, two_bits 
@@ -93,19 +98,45 @@ two_bits:
 	j out
 	
 three_bits:
-	bgtu $s1, 0xFFFF, four_bits
-
+	bgtu $s1, 0xFFFF, four_bits # n = 1110 a + 10 b + 10 c
+	#logic: copy last 6 bits, add 10, copy next 6 bits, add 10, copy next 4 bits, add 1110, s2 equals combined values
+		
+	#stuff for c (t3)
+	and $t3, $s1, 0x3F	# c = lowest 6 bits
+	sll $t4, $s6, 6		# shift 2 left 6 bits
+	add $t5, $t4, $t3	# c' = 10 + c
+	
+	#stuff for b (t2)
+	srl $t9, $s1, 6		# shift s1 right 6, store in t9
+	and $t2, $t9, 0x3F	# b = next 6 bits
+	sll $t2, $t2, 8		# shift t2 left 8 bits to make space for t3
+	sll $t4, $s6, 14	# shift 2 left 14 bits to match t2
+	add $t6, $t4, $t2	# b' = 10 + b
+	
+	#stuff for a (t1)
+	srl $t9, $s1, 12	# shift s1 right 6, store in t9
+	and $t1, $t9, 0xF	# a = next 4 bits
+	sll $t1, $t1, 16	# shift a left 16 to make space for t2
+	sll $t7, $s4, 20	# shift 14 left 20 to line up with a
+	add $t8, $t7, $t1	# a' = 1110 + a
+	
+	#stuff for n (s2)
+	add $s2, $t6, $t5	# answer = b' + c'
+	add $s2, $s2, $t8	# answer = a' + b' + c'
+	
 	j out
 
 four_bits:
-	bgtu $s1, 0x10FFFF, failure
+	bgtu $s1, 0x10FFFF, failure # n = 11110 a + 10 b + 10 c + 10 d
 
 	j out
 
 failure:
 	li $s2, 0xFFFFFFFF
-out:
 
+out:
+	#this method is only here to break the loop 
+	
 	# Your part ends here
 	
 	# print i, j and n
