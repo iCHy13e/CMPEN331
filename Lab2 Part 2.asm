@@ -128,6 +128,37 @@ three_bits:
 
 four_bits:
 	bgtu $s1, 0x10FFFF, failure # n = 11110 a + 10 b + 10 c + 10 d
+	
+	#stuff for d (t4)
+	and $t4, $s1, 0x3F	# d = lowest 6 bits
+	sll $t5, $s6, 6		# shift 2 left 6 bits
+	add $t4, $t4, $t5	# d' = 10 + d
+	
+	#stuff for c (t3)
+	srl $t9, $s1, 6		# shift s1 right 6, store in t9
+	and $t3, $t9, 0x3F	# c = next 6 bits
+	sll $t3, $t3, 8		# shift t3 left 8 bits to make space for t4
+	sll $t5, $s6, 14	# shift 2 left 14 bits to match t2
+	add $t3, $t3, $t5	# c' = 10 + c
+	
+	#stuff for b (t2)
+	srl $t9, $s1, 12	# shift s1 right 12, store in t9
+	and $t2, $t9, 0x3F	# b = next 6 bits
+	sll $t2, $t2, 16	# shift t2 left 16 bits to make space for t3
+	sll $t5, $s6, 22	# shift 2 left 22 bits to match t2
+	add $t2, $t2, $t5	# b' = 10 + b
+	
+	#stuff for a (t1)
+	srl $t9, $s1, 18	# shift s1 right 18, store in t9
+	and $t1, $t9, 0x7 	# a = next 3 bits
+	sll $t1, $t1, 24	# shift t1 left 24 bits to make space for t2
+	sll $t6, $s5, 27	# shift 30 left 27 bits to match t1
+	add $t1, $t1, $t6	# a' = 11110 + a
+	
+	#stuff for n (s2)
+	add $t7, $t4, $t3	# t7 = t4 + t3
+	add $t8, $t2, $t1	# t8 = t2 + t1
+	add $s2, $t8, $t7
 
 	j out
 
