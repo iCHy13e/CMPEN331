@@ -60,11 +60,12 @@ module dataPath(
         controlUnit controlUnit(dinstOut[31:26], dinstOut[5:0], wreg, m2reg , wmem, aluc, aluimm, regrt);
         mux mux(dinstOut[20:16], dinstOut[15:11], regrt, destReg);
         e e(dinstOut[15:0], imm32);
-        reg_file reg_file(dinstOut[25:21], dinstOut[20:16], qa, qb);
+        reg_file reg_file(clk, wwreg, dinstOut[25:21], dinstOut[20:16], wdo, qa, qb);
         IDEXE IDEXE(clk, wreg, ewreg, m2reg, em2reg, wmem, ewmem, aluc, ealuc, aluimm, ealuimm, destReg, edestReg, qa, eqa, qb, eqb, imm32, eimm32);  
         aluMUX aluMUX(ealuimm, eqb, eimm32, b);
         ALU ALU(eqa, b, ealuc, r);
         EXEMEM EXEMEM(clk, ewreg, mwreg, em2reg, mm2reg, ewmem, mwmem, edestReg, mdestReg, r, mr, eqb, mqb);
         dataMem dataMem(clk, mwmem, mr, mqb, mdo);
         MEMWB MEMWB(clk, mwreg, wwreg, mm2reg, wm2reg, mdestReg, wdestReg, mr, wr, mdo, wdo);
+        wbMUX wbMUX(wr, wdo, wm2reg, wdo);
 endmodule
