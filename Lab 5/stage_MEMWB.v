@@ -64,3 +64,19 @@ module MEMWB(
         wdo <= mdo;
     end
 endmodule
+
+// Module      : wbMUX (Write Back Multiplexer)
+// Description : set wbData based on wm2reg
+// Input(s)    : wr, wdo, wm2reg
+// Output(s)   : wbData
+module wbMUX(input [31:0] wr, input [31:0] wdo, input wm2reg, output reg [31:0] wbData);
+
+    always @ (*) begin
+        if(wm2reg == 1) begin
+            wbData = wdo;
+        end
+        else begin
+            wbData = wr;
+        end
+    end
+endmodule
