@@ -12,10 +12,6 @@
 // Description : On signal change, set control signals based on op and func
 // Input(s)    : op, func
 // Output(s)   : wreg, m2reg, wmem, aluc, aluimm, regrt
-// Module      : Control Unit
-// Description : On signal change, set control signals based on op and func
-// Input(s)    : op, func
-// Output(s)   : wreg, m2reg, wmem, aluc, aluimm, regrt
 module controlUnit(
     input[5:0] op, 
     input[5:0] func,
@@ -61,10 +57,10 @@ endmodule
 
 
 // Module      : RegFile (Register File)
-// Description : On signal change, qa = rs, qb = rt
-// Input(s)    : rs, rt
+// Description : On initial, set all registers to 0. On negative clock edge, if wwreg = 1: set wdestReg = wbData
+// Input(s)    : Clock, rs, rt, wdestReg, wbData
 // Output(s)   : qa, qb
-module reg_file(input [4:0] rs, input [4:0] rt, output reg[31:0] qa, output reg[31:0] qb);
+module reg_file(input clk, input wwreg, input [4:0] rs, input [4:0] rt, input [4:0] wdestReg, input [31:0] wbData, output reg[31:0] qa, output reg[31:0] qb);
     reg[31:0] RegFile[31:0];
     
     integer i;
@@ -74,6 +70,12 @@ module reg_file(input [4:0] rs, input [4:0] rt, output reg[31:0] qa, output reg[
 		end
         assign qa = RegFile[rs];
         assign qb = RegFile[rt];
+    end
+
+    always @(negedge clk) begin
+        if(wwreg == 1) begin
+            RegFile[wdestReg] <= wbData;
+        end
     end
 endmodule 
 
