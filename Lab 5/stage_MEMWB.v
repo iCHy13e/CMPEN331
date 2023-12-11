@@ -5,7 +5,7 @@
 // 
 // Create Date: 11.28.23 12:36
 // Project Name: Lab 4, Piplelined CPU
-// Modules Contained: dataMem, EXEMEM
+// Modules Contained: dataMem, MEMWB, wbMUX
 //////////////////////////////////////////////////////////////////////////////////
 
 // Module      : DataMem (Data Memory)
@@ -31,13 +31,13 @@ module dataMem(input clk, input mwmem, input [31:0] mr, input [31:0] mqb, output
 
     //On any signal change set mdo = mr
     always @ (*) begin
-        mdo = mr;
+        mdo = dMem[mr[31:2]];
     end
 
     //On negative clock edge, set mdo = mqb if mwmem = 1
     always @(negedge clk) begin
         if(mwmem == 1) begin
-            mdo <= mqb;
+            dMem[mdo[31:2]] <= mqb;
         end
     end
 endmodule
@@ -72,11 +72,10 @@ endmodule
 module wbMUX(input [31:0] wr, input [31:0] wdo, input wm2reg, output reg [31:0] wbData);
 
     always @ (*) begin
-        if(wm2reg == 1) begin
-            wbData = wdo;
-        end
-        else begin
-            wbData = wr;
-        end
+        //if wm2reg = 1, wbData = wdo
+        case(wm2reg)
+            1: wbData = wdo;
+            0: wbData = wr;
+        endcase
     end
 endmodule

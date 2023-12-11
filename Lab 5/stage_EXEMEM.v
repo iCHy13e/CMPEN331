@@ -15,24 +15,21 @@
 module aluMUX(input ealuimm, input [31:0] eqb, input [31:0] eimm32, output reg[31:0] b);
         
         always @(*) begin
-        //if ealuimm = 0, b = eqb
-        if(ealuimm == 1) begin
-            b <= eqb;
-        end 
-        //else, b = eimm32
-        else begin
-            b <= eimm32;
-        end
+         //if ealuimm = 0, b = eqb
+        case(ealuimm)
+            0: b <= eqb;
+            1: b <= eimm32;
+        endcase
     end 
 endmodule
 
 
 // Module      : ALU (Arithmetic Logic Unit)
-// Description : On signal change, set r = eaq and b based on ealuc
+// Description : On signal change, set r = eqa and b based on ealuc
 // Input(s)    : ea, b, ealuc
 // Output(s)   : r
 module ALU(input [31:0] eqa, input [31:0] b, input [3:0] ealuc, output reg[31:0] r);
-//add, sub, and, or, xor
+    //add, sub, and, or, xor
     always @(*) begin
         if(ealuc == 4'b0010) begin
             r <= eqa + b;

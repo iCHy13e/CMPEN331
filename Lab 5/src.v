@@ -4,7 +4,7 @@
 // Name: Justin Ngo
 // 
 // Create Date: 11.28.23 12:36
-// Project Name: Lab 4, Piplelined CPU
+// Project Name: Lab 5, Piplelined CPU
 //////////////////////////////////////////////////////////////////////////////////
 
 // Module      : Datapath

@@ -76,8 +76,8 @@ module mux(input [4:0] rt, input [4:0] rd, input regrt, output reg[4:0] destReg)
     always @(*) begin
         //if regrt = 1, destReg = rt 
         case(regrt)
-            1'b1: destReg = rt;
-            1'b0: destReg = rd;
+            1: destReg <= rt;
+            0: destReg <= rd;
         endcase
     end 
 endmodule
