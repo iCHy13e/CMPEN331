@@ -36,15 +36,31 @@ module controlUnit(
                     aluimm = 1'b1;
                     regrt  = 1'b1;
                 end
-            //add
-            6'b100000:
-                begin
-                    wreg = 1'b1;
-                    m2reg = 1'b0;
-                    wmem = 1'b0;
-                    aluc = 4'b0010;
-                    aluimm = 1'b0;
-                    regrt  = 1'b0;
+            
+            //r type
+            6'b000000:
+                begin case(func)
+                    //add
+                    6'b100000:
+                        begin
+                            wreg = 1'b1;
+                            m2reg = 1'b0;
+                            wmem = 1'b0;
+                            aluc = 4'b0010;
+                            aluimm = 1'b0;
+                            regrt  = 1'b0;
+                        end
+                    //sub
+                    6'b100010:
+                        begin
+                            wreg = 1'b1;
+                            m2reg = 1'b0;
+                            wmem = 1'b0;
+                            aluc = 4'b0110;
+                            aluimm = 1'b0;
+                            regrt  = 1'b0;
+                        end
+                    endcase 
                 end
         endcase
     end
