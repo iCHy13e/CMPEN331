@@ -36,31 +36,15 @@ module controlUnit(
                     aluimm = 1'b1;
                     regrt  = 1'b1;
                 end
-            
-            //r type
-            6'b000000:
-                begin case(func)
-                    //add
-                    6'b100000:
-                        begin
-                            wreg = 1'b1;
-                            m2reg = 1'b0;
-                            wmem = 1'b0;
-                            aluc = 4'b0010;
-                            aluimm = 1'b0;
-                            regrt  = 1'b0;
-                        end
-                    //sub
-                    6'b100010:
-                        begin
-                            wreg = 1'b1;
-                            m2reg = 1'b0;
-                            wmem = 1'b0;
-                            aluc = 4'b0110;
-                            aluimm = 1'b0;
-                            regrt  = 1'b0;
-                        end
-                    endcase 
+            //add
+            6'b100000:
+                begin
+                    wreg = 1'b1;
+                    m2reg = 1'b0;
+                    wmem = 1'b0;
+                    aluc = 4'b0010;
+                    aluimm = 1'b0;
+                    regrt  = 1'b0;
                 end
         endcase
     end
@@ -71,7 +55,7 @@ endmodule
 // Description : Sets the value of destReg to either rt or rd based on regrt
 // Input(s)    : rt, rd, regrt
 // Output(s)   : destReg
-module mux(input [4:0] rt, input [4:0] rd, input regrt, output reg[4:0] destReg);
+module regMUX(input [4:0] rt, input [4:0] rd, input regrt, output reg[4:0] destReg);
 
     always @(*) begin
         //if regrt = 1, destReg = rt 
@@ -85,7 +69,7 @@ endmodule
 
 // Module      : RegFile (Register File)
 // Description : On initial, set all registers to 0. On negative clock edge, if wwreg = 1: set wdestReg = wbData
-// Input(s)    : Clock, rs, rt, wdestReg, wbData
+// Input(s)    : Clock, wwreg, rs, rt, wdestReg, wbData
 // Output(s)   : qa, qb
 module reg_file(input clk, input wwreg, input [4:0] rs, input [4:0] rt, input [4:0] wdestReg, input [31:0] wbData, output reg[31:0] qa, output reg[31:0] qb);
     reg[31:0] RegFile[31:0];

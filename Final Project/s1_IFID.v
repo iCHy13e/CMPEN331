@@ -30,7 +30,7 @@ endmodule
 // Description : On signal change, set nextPC to curPC + 4
 // Input(s)    : curPC
 // Output(s)   : nextPC
-module adder(input [31:0] curPC, output reg[31:0] nextPC);
+module pcAdder(input [31:0] curPC, output reg[31:0] nextPC);
              
     always @(*) begin
         nextPC = curPC + 32'd4;
