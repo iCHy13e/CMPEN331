@@ -83,30 +83,6 @@ module regMUX(input [4:0] rt, input [4:0] rd, input regrt, output reg[4:0] destR
 endmodule
 
 
-// Module      : RegFile (Register File)
-// Description : On initial, set all registers to 0. On negative clock edge, if wwreg = 1: set wdestReg = wbData
-// Input(s)    : Clock, wwreg, rs, rt, wdestReg, wbData
-// Output(s)   : qa, qb
-module reg_file(input clk, input wwreg, input [4:0] rs, input [4:0] rt, input [4:0] wdestReg, input [31:0] wbData, output reg[31:0] qa, output reg[31:0] qb);
-    reg[31:0] RegFile[31:0];
-    
-    integer i;
-    initial begin
-		for (i=0; i<32; i=i+1) begin
-		    RegFile[i] <= 32'b00000000000000000000000000000000;
-		end
-        assign qa = RegFile[rs];
-        assign qb = RegFile[rt];
-    end
-
-    always @(negedge clk) begin
-        if(wwreg == 1) begin
-            RegFile[wdestReg] <= wbData;
-        end
-    end
-endmodule 
-
-
 // Module      : E (Sign Extend)
 // Description : On signal change, set imm32 to sign extended imm
 // Input(s)    : imm
