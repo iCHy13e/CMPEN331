@@ -3,15 +3,15 @@
 // School: PSU Main Campus
 // Name: Justin Ngo
 // 
-// Create Date: 11.28.23 12:36
-// Project Name: Lab 4, Piplelined CPU
-// Modules Contained: controlUnit, mux, e, regfile, IDEXE
+// Create Date: 12.10.23 12:36
+// Project Name: Final Project Piplelined CPU
+// Modules Contained: controlUnit, regMUX, fwdMUXA. fwdMUXB, e, IDEXE
 //////////////////////////////////////////////////////////////////////////////////
 
 // Module      : Control Unit
-// Description : On signal change, set control signals based on op and func
-// Input(s)    : op, func
-// Output(s)   : wreg, m2reg, wmem, aluc, aluimm, regrt
+// Description : On signal change, set control signals based on op and func, set forwarding signals based on edestReg, mdestReg, and mm2reg
+// Input(s)    : op, func, rs, rt, edestReg, ewreg, em2reg, mdestReg, mwreg, mm2reg
+// Output(s)   : wreg, m2reg, wmem, aluc, aluimm, regrt, fwdA, fwdB
 module controlUnit(
     input [5:0] op, 
     input [5:0] func,
@@ -150,7 +150,7 @@ module controlUnit(
 endmodule 
 
 
-// Module      : Mux (Multiplexer)
+// Module      : regMux 
 // Description : Sets the value of destReg to either rt or rd based on regrt
 // Input(s)    : rt, rd, regrt
 // Output(s)   : destReg
@@ -216,7 +216,7 @@ endmodule
 
 // Module      : IDEXE (Instruction Decode Execute)
 // Description : On positive clock edge, set all output signals to their respective input signals
-// Input(s)    : Clock, wreg, m2reg, wmem, aluc, aluimm, destReg, qa, qb, imm32
+// Input(s)    : Clock, wreg, m2reg, wmem, aluc, aluimm, destReg, muxAOut, muxBOut, imm32
 // Output(s)   : Ewreg, em2reg, ewmem, ealuc, ealuimm, edestReg, eqa, eqb, eimm32
 module IDEXE(
     input clk,

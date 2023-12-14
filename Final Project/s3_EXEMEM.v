@@ -3,8 +3,8 @@
 // School: PSU Main Campus
 // Name: Justin Ngo
 // 
-// Create Date: 11.28.23 12:36
-// Project Name: Lab 4, Piplelined CPU
+// Create Date: 12.10.23 12:36
+// Project Name: Final Project, Piplelined CPU
 // Modules Contained: aluMux, ALU, EXEMEM
 //////////////////////////////////////////////////////////////////////////////////
 
@@ -26,7 +26,7 @@ endmodule
 
 // Module      : ALU (Arithmetic Logic Unit)
 // Description : On signal change, set r = eqa and b based on ealuc
-// Input(s)    : ea, b, ealuc
+// Input(s)    : eqa, b, ealuc
 // Output(s)   : r
 module ALU(input [31:0] eqa, input [31:0] b, input [3:0] ealuc, output reg[31:0] r);
     

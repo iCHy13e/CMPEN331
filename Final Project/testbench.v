@@ -3,9 +3,9 @@
 // School: PSU Main Campus
 // Name: Justin Ngo
 // 
-// Create Date: 11.28.23 12:36
+// Create Date: 12.10.23 12:36
 // Module(s) Name: Testbench
-// Project Name: Lab 5, Piplelined CPU Part 3
+// Project Name: Final Project, Piplelined CPU
 //////////////////////////////////////////////////////////////////////////////////
 
 module testbench();
@@ -36,7 +36,6 @@ module testbench();
 
     dataPath dataPath_tb(clk_tb, pc_tb, dinstOut_tb, ewreg_tb, em2reg_tb, ewmem_tb, ealuc_tb, ealuimm_tb, edestReg_tb, eqa_tb, eqb_tb, eimm32_tb, mwreg_tb, mm2reg_tb, mwmem_tb, 
                         mdestReg_tb, mqb_tb, wwreg_tb, wm2reg_tb, wdestReg_tb, mr_tb, wr_tb, wdo_tb);
-
 
     initial begin
         clk_tb = 0;
