@@ -64,6 +64,36 @@ module controlUnit(
                             aluimm = 1'b0;
                             regrt  = 1'b0;
                         end
+                    //and
+                    6'b100100:
+                        begin
+                            wreg = 1'b1;
+                            m2reg = 1'b0;
+                            wmem = 1'b0;
+                            aluc = 4'b0000;
+                            aluimm = 1'b0;
+                            regrt  = 1'b0;
+                        end
+                    //or
+                    6'b100101:
+                        begin
+                            wreg = 1'b1;
+                            m2reg = 1'b0;
+                            wmem = 1'b0;
+                            aluc = 4'b0001;
+                            aluimm = 1'b0;
+                            regrt  = 1'b0;
+                        end
+                    //xor
+                    6'b100110:
+                        begin
+                            wreg = 1'b1;
+                            m2reg = 1'b0;
+                            wmem = 1'b0;
+                            aluc = 4'b0011;
+                            aluimm = 1'b0;
+                            regrt  = 1'b0;
+                        end                        
                     endcase 
                 end
         endcase
