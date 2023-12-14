@@ -91,16 +91,16 @@ module reg_file(input clk, input wwreg, input [4:0] rs, input [4:0] rt, input [4
     integer i;
     initial begin
         
-        RegFile[0] <= 32'h00000000;
-        RegFile[1] <= 32'hA00000AA;
-        RegFile[2] <= 32'h10000011;
-        RegFile[3] <= 32'h20000022;
-        RegFile[4] <= 32'h30000033;
-        RegFile[5] <= 32'h40000044;
-        RegFile[6] <= 32'h50000055;
-        RegFile[7] <= 32'h60000066;
-        RegFile[8] <= 32'h70000077;
-        RegFile[9] <= 32'h80000088;
+        RegFile[0]  <= 32'h00000000;
+        RegFile[1]  <= 32'hA00000AA;
+        RegFile[2]  <= 32'h10000011;
+        RegFile[3]  <= 32'h20000022;
+        RegFile[4]  <= 32'h30000033;
+        RegFile[5]  <= 32'h40000044;
+        RegFile[6]  <= 32'h50000055;
+        RegFile[7]  <= 32'h60000066;
+        RegFile[8]  <= 32'h70000077;
+        RegFile[9]  <= 32'h80000088;
         RegFile[10] <= 32'h90000099;
 
         for(i = 11; i < 32; i = i + 1) begin

@@ -29,6 +29,8 @@ endmodule
 // Input(s)    : ea, b, ealuc
 // Output(s)   : r
 module ALU(input [31:0] eqa, input [31:0] b, input [3:0] ealuc, output reg[31:0] r);
+    
+    //values come from zybooks
     always @(*) begin
         case(ealuc) 
             //and

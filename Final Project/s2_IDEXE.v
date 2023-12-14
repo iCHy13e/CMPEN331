@@ -37,7 +37,7 @@ module controlUnit(
     output reg [1:0] fwdA,
     output reg [1:0] fwdB);
                     
-    //instructions
+    //instruction checks
     always @(*) begin
         case(op)
             //lw
@@ -114,7 +114,39 @@ module controlUnit(
                 end
         endcase
     end
-    
+
+    //forwarding checks
+    always @(ewreg, mwreg, mm2reg) begin
+        case({ewreg, mwreg, mm2reg})
+            // Case 1
+            4'b100: begin
+                if(edestReg == rs)
+                    fwdA = 2'b10;
+                else if(edestReg == rt)
+                    fwdB = 2'b10;
+            end
+            // Case 2
+            4'b010: begin
+                if(mdestReg == rs)
+                    fwdA = 2'b01;
+                else if(mdestReg == rt)
+                    fwdB = 2'b01;
+            end
+            // Case 3
+            4'b011: begin
+                if(mdestReg == rs)
+                    fwdA = 2'b11;
+                else if(mdestReg == rt)
+                    fwdB = 2'b11;
+            end
+            // Default case
+            default: begin
+                fwdA = 2'b00;
+                fwdB = 2'b00;
+            end
+        endcase
+    end
+
 endmodule 
 
 
