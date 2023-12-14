@@ -29,11 +29,19 @@ endmodule
 // Input(s)    : ea, b, ealuc
 // Output(s)   : r
 module ALU(input [31:0] eqa, input [31:0] b, input [3:0] ealuc, output reg[31:0] r);
-    //add, sub, and, or, xor
     always @(*) begin
-        if(ealuc == 4'b0010) begin
-            r <= eqa + b;
-        end
+        case(ealuc) 
+            //and
+            4'b0000: r <= eqa & b;
+            //or
+            4'b0001: r <= eqa | b;
+            //xor
+            4'b0011: r <= eqa ^ b;
+            //add
+            4'b0010: r <= eqa + b;
+            //sub
+            4'b0110: r <= eqa - b;
+        endcase
     end
 endmodule
 
