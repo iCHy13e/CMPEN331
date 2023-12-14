@@ -54,11 +54,13 @@ module dataPath(
     wire [31:0] qb;
     wire [31:0] imm32;
 
-    //lab 4 & 5
+    //lab 4 & 5 / final project
     wire [31:0] b;
     wire [31:0] r;
     wire [31:0] mdo;
     wire [31:0] wbData;
+    wire [1:0] fwdA;
+    wire [1:0] fwdB;
 
 
         //IFID
@@ -68,7 +70,8 @@ module dataPath(
         IFID IFID(clk, instOut, dinstOut);
         
         //IDEXE
-        controlUnit controlUnit(dinstOut[31:26], dinstOut[5:0], wreg, m2reg , wmem, aluc, aluimm, regrt);
+        
+        controlUnit controlUnit(dinstOut[31:26], dinstOut[5:0], dinstOut[25:21], dinstOut[20:16], edestReg, ewreg, em2reg, mdestReg, mwreg, mm2reg, wreg, m2reg, wmem, aluc, aluimm, regrt, fwdA, fwdB);
         regMUX regMUX(dinstOut[20:16], dinstOut[15:11], regrt, destReg);
         e e(dinstOut[15:0], imm32);
         IDEXE IDEXE(clk, wreg, ewreg, m2reg, em2reg, wmem, ewmem, aluc, ealuc, aluimm, ealuimm, destReg, edestReg, qa, eqa, qb, eqb, imm32, eimm32);  

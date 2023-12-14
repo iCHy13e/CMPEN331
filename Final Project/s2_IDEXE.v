@@ -13,19 +13,29 @@
 // Input(s)    : op, func
 // Output(s)   : wreg, m2reg, wmem, aluc, aluimm, regrt
 module controlUnit(
-    input[5:0] op, 
-    input[5:0] func,
+    input [5:0] op, 
+    input [5:0] func,
     input [4:0] rs,
     input [4:0] rt,
+    
+    //exe stage signals
+    input [4:0] edestReg,
+    input ewreg,
+    input em2reg,
+
+    //mem stage signals
+    input [4:0] mdestReg,
+    input mwreg,
+    input mm2reg,
 
     output reg wreg, 
     output reg m2reg, 
     output reg wmem, 
     output reg[3:0] aluc, 
     output reg aluimm, 
-    output reg regrt
-    output reg [1:0] fwda
-    output reg [1:0] fwdb);
+    output reg regrt,
+    output reg [1:0] fwdA,
+    output reg [1:0] fwdB);
                     
     //instructions
     always @(*) begin
@@ -43,6 +53,8 @@ module controlUnit(
             
             //r type
             6'b000000:
+
+                //func values come from https://inst.eecs.berkeley.edu/~cs61c/resources/MIPS_help.html
                 begin case(func)
                     //add
                     6'b100000:
@@ -54,6 +66,7 @@ module controlUnit(
                             aluimm = 1'b0;
                             regrt  = 1'b0;
                         end
+                    
                     //sub
                     6'b100010:
                         begin
@@ -64,6 +77,7 @@ module controlUnit(
                             aluimm = 1'b0;
                             regrt  = 1'b0;
                         end
+                    
                     //and
                     6'b100100:
                         begin
@@ -74,6 +88,7 @@ module controlUnit(
                             aluimm = 1'b0;
                             regrt  = 1'b0;
                         end
+                    
                     //or
                     6'b100101:
                         begin
@@ -84,6 +99,7 @@ module controlUnit(
                             aluimm = 1'b0;
                             regrt  = 1'b0;
                         end
+                    
                     //xor
                     6'b100110:
                         begin
@@ -98,6 +114,7 @@ module controlUnit(
                 end
         endcase
     end
+    
 endmodule 
 
 
@@ -121,7 +138,7 @@ endmodule
 // Description : Set muxAOut based on fdwa
 // Input(s)    : fwda, qa, r, mr, mdo
 // Output(s)   : muxAOut
-module fwdMUXA(input [1:0] fwda, input [31:0] qa, input [31:0] r, input [31:0] mr, input [31:0] mdo output reg [31:0] muxAOut);
+module fwdMUXA(input [1:0] fwda, input [31:0] qa, input [31:0] r, input [31:0] mr, input [31:0] mdo, output reg [31:0] muxAOut);
     
     always @(*) begin
         case(fwda)
@@ -142,10 +159,10 @@ module fwdMUXB(input [1:0] fwdb, input [31:0] qb, input [31:0] r, input [31:0] m
         
     always @(*) begin
         case(fwdb)
-            2'b00: muxAOut <= qb;
-            2'b01: muxAOut <= r;
-            2'b10: muxAOut <= mr;
-            2'b11: muxAOut <= mdo;
+            2'b00: muxBOut <= qb;
+            2'b01: muxBOut <= r;
+            2'b10: muxBOut <= mr;
+            2'b11: muxBOut <= mdo;
         endcase
     end
 endmodule
