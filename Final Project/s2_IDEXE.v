@@ -15,15 +15,19 @@
 module controlUnit(
     input[5:0] op, 
     input[5:0] func,
+    input [4:0] rs,
+    input [4:0] rt,
 
     output reg wreg, 
     output reg m2reg, 
     output reg wmem, 
     output reg[3:0] aluc, 
     output reg aluimm, 
-    output reg regrt);
+    output reg regrt
+    output reg [1:0] fwda
+    output reg [1:0] fwdb);
                     
-    //lw instructions
+    //instructions
     always @(*) begin
         case(op)
             //lw
@@ -83,6 +87,40 @@ module regMUX(input [4:0] rt, input [4:0] rd, input regrt, output reg[4:0] destR
 endmodule
 
 
+// Module      : Forward MUX A
+// Description : Set muxAOut based on fdwa
+// Input(s)    : fwda, qa, r, mr, mdo
+// Output(s)   : muxAOut
+module fwdMUXA(input [1:0] fwda, input [31:0] qa, input [31:0] r, input [31:0] mr, input [31:0] mdo output reg [31:0] muxAOut);
+    
+    always @(*) begin
+        case(fwda)
+            2'b00: muxAOut <= qa;
+            2'b01: muxAOut <= r;
+            2'b10: muxAOut <= mr;
+            2'b11: muxAOut <= mdo;
+        endcase
+    end
+endmodule
+
+
+// Module      : Forward MUX B
+// Description : Set muxBOut based on fwdb
+// Input(s)    : fwdb. qb, r, mr, mdo
+// Output(s)   : muxBOut
+module fwdMUXB(input [1:0] fwdb, input [31:0] qb, input [31:0] r, input [31:0] mr, input [31:0] mdo, output reg [31:0] muxBOut);
+        
+    always @(*) begin
+        case(fwdb)
+            2'b00: muxAOut <= qb;
+            2'b01: muxAOut <= r;
+            2'b10: muxAOut <= mr;
+            2'b11: muxAOut <= mdo;
+        endcase
+    end
+endmodule
+
+
 // Module      : E (Sign Extend)
 // Description : On signal change, set imm32 to sign extended imm
 // Input(s)    : imm
@@ -110,8 +148,8 @@ module IDEXE(
     input [3:0] aluc,       output reg [3:0] ealuc,
     input aluimm,           output reg ealuimm,
     input [4:0] destReg,    output reg [4:0] edestReg,
-    input [31:0] qa,        output reg [31:0] eqa,
-    input [31:0] qb,        output reg [31:0] eqb,
+    input [31:0] muxAOut,   output reg [31:0] eqa,
+    input [31:0] muxBOut,   output reg [31:0] eqb,
     input [31:0] imm32,     output reg [31:0] eimm32);
         
     always @(posedge clk) begin
@@ -121,8 +159,8 @@ module IDEXE(
         ealuc <= aluc;
         ealuimm <= aluimm; 
         edestReg <= destReg;
-        eqa <= qa;
-        eqb <= qb;
+        eqa <= muxAOut;
+        eqb <= muxBOut;
         eimm32 <= imm32;
     end 
 endmodule
