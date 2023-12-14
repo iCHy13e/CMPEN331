@@ -61,6 +61,8 @@ module dataPath(
     wire [31:0] wbData;
     wire [1:0] fwdA;
     wire [1:0] fwdB;
+    wire [31:0] muxAOut;
+    wire [31:0] muxBOut;
 
 
         //IFID
@@ -72,8 +74,10 @@ module dataPath(
         //IDEXE
         controlUnit controlUnit(dinstOut[31:26], dinstOut[5:0], dinstOut[25:21], dinstOut[20:16], edestReg, ewreg, em2reg, mdestReg, mwreg, mm2reg, wreg, m2reg, wmem, aluc, aluimm, regrt, fwdA, fwdB);
         regMUX regMUX(dinstOut[20:16], dinstOut[15:11], regrt, destReg);
+        fwdMUXA fwdMUXA(fwdA, qa, r, mr, mdo, muxAOut);
+        fwdMUXB fwdMUXB(fwdB, qb, r, mr, mdo, muxBOut);
         e e(dinstOut[15:0], imm32);
-        IDEXE IDEXE(clk, wreg, ewreg, m2reg, em2reg, wmem, ewmem, aluc, ealuc, aluimm, ealuimm, destReg, edestReg, qa, eqa, qb, eqb, imm32, eimm32);  
+        IDEXE IDEXE(clk, wreg, ewreg, m2reg, em2reg, wmem, ewmem, aluc, ealuc, aluimm, ealuimm, destReg, edestReg, muxAOut, eqa, muxBOut, eqb, imm32, eimm32);  
         
         //EXEMEM
         aluMUX aluMUX(ealuimm, eqb, eimm32, b);

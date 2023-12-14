@@ -116,7 +116,7 @@ module controlUnit(
     end
 
     //forwarding checks
-    always @(ewreg, mwreg, mm2reg) begin
+    always @(*) begin
         case({ewreg, mwreg, mm2reg})
             // Case 1
             4'b100: begin
@@ -170,10 +170,10 @@ endmodule
 // Description : Set muxAOut based on fdwa
 // Input(s)    : fwda, qa, r, mr, mdo
 // Output(s)   : muxAOut
-module fwdMUXA(input [1:0] fwda, input [31:0] qa, input [31:0] r, input [31:0] mr, input [31:0] mdo, output reg [31:0] muxAOut);
+module fwdMUXA(input [1:0] fwdA, input [31:0] qa, input [31:0] r, input [31:0] mr, input [31:0] mdo, output reg [31:0] muxAOut);
     
     always @(*) begin
-        case(fwda)
+        case(fwdA)
             2'b00: muxAOut <= qa;
             2'b01: muxAOut <= r;
             2'b10: muxAOut <= mr;
@@ -187,10 +187,10 @@ endmodule
 // Description : Set muxBOut based on fwdb
 // Input(s)    : fwdb. qb, r, mr, mdo
 // Output(s)   : muxBOut
-module fwdMUXB(input [1:0] fwdb, input [31:0] qb, input [31:0] r, input [31:0] mr, input [31:0] mdo, output reg [31:0] muxBOut);
+module fwdMUXB(input [1:0] fwdB, input [31:0] qb, input [31:0] r, input [31:0] mr, input [31:0] mdo, output reg [31:0] muxBOut);
         
     always @(*) begin
-        case(fwdb)
+        case(fwdB)
             2'b00: muxBOut <= qb;
             2'b01: muxBOut <= r;
             2'b10: muxBOut <= mr;
